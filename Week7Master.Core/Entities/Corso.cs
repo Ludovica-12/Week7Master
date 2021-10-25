@@ -20,6 +20,5 @@ namespace Week7Master.Core.Entities
         {
             return $"Codice Corso: {CodiceCorso}\t Nome: {Nome}\t Descrizione: {Descrizione}";
         }
-
     }
 }

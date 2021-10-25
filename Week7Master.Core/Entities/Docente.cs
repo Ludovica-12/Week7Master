@@ -13,7 +13,7 @@ namespace Week7Master.Core.Entities
 
         public override string ToString()
         {
-            return $"Id: {ID}\t Nome: {Nome}\t Cognome{Cognome}\t Altre info: {Email} - {Telefono}";
+            return $"Id: {ID}\t Nome: {Nome}\t Cognome: {Cognome}\t Altre info: {Email} - {Telefono}";
         }
     }
 }

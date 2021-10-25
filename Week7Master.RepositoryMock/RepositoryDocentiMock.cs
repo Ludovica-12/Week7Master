@@ -19,7 +19,7 @@ namespace Week7Master.RepositoryMock
         public Docente Add(Docente docente)
         {
 
-            if (Docenti.Count == 0)
+            if (Docenti.Count() == 0)
             {
                 docente.ID = 1;
             }

@@ -22,7 +22,6 @@ namespace Week7Master.Core.BusinessLayer
         public string EliminaCorso(string codiceCorsoDaEliminare);
         #endregion
 
-
         #region Funzionalità Studenti
         //Visializza studenti
         public List<Studente> GetAllStudenti();
@@ -35,7 +34,6 @@ namespace Week7Master.Core.BusinessLayer
         //Visializzo l'elenco degli studenti iscritti ad un corso
         public List<Studente> VisualizzaStudentiCorso(string CodiceCorso);
         #endregion
-
 
         #region Funzionalità Docenti
         //visualizza docenti
@@ -52,7 +50,15 @@ namespace Week7Master.Core.BusinessLayer
         //Visializza Lezioni
         public List<Lezione> GetAllLezioni();
         //Inserisci nuova Lezione
-        //public string InserisciNuovLezione(Lezione nuovaLezione);
+        public string AggiungiLezione(Lezione lezione);
+        //modifica lezione
+        public string ModificaLezione(int id, string nuovaAula);
+        //Elimina lezione
+        string EliminaLezione(int idLezioneDaEliminare);
+        //visualizza tutte lezioni di un corso recuperando il corso in base al codiceCorso
+        public IList<Lezione> GetLezioniByCodiceCorso(string codiceCorso);
+        //visualizza tutte lezioni di un corso recuperando il corso in base al nome
+        public IList<Lezione> GetLezioniByNomeCorso(string nomeCorso);
         #endregion
 
     }

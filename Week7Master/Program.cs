@@ -1,13 +1,15 @@
 ﻿using System;
 using Week7Master.Core.BusinessLayer;
 using Week7Master.Core.Entities;
-using Week7Master.RepositoryMock;
+using Week7Master.RepositoryEF.RepositoryEF;
+//using Week7Master.RepositoryMock;
 
 namespace Week7Master
 {
     class Program
     {
-        private static readonly IBusinessLayer bl = new MainBusinessLayer(new RepositoryCorsiMock(), new RepositoryDocentiMock(), new RepositoryLezioniMock(), new RepositoryStudentiMock());
+        //private static readonly IBusinessLayer bl = new MainBusinessLayer(new RepositoryCorsiMock(), new RepositoryDocentiMock(), new RepositoryLezioniMock(), new RepositoryStudentiMock());
+        private static readonly IBusinessLayer bl = new MainBusinessLayer(new RepositoryCorsiEF(), new RepositoryDocentiEF(), new RepositoryLezioniEF(), new RepositoryStudentiEF());
 
         static void Main(string[] args)
         {
@@ -143,44 +145,129 @@ namespace Week7Master
         #region Lezioni
         private static void VisualizzaLezionePerNomeCorso()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Inserisci il nome del corso:");
+            string nomeCorso = Console.ReadLine();
+
+            var lezioni = bl.GetLezioniByNomeCorso(nomeCorso);
+
+            if (lezioni == null)
+            {
+                Console.WriteLine("Errore. Non esiste nessun corso con questo nome");
+            }
+            else if (lezioni.Count == 0)
+            {
+                Console.WriteLine("Lista vuota");
+            }
+            else
+            {
+                foreach (var item in lezioni)
+                {
+                    Console.WriteLine(item);
+                }
+            }
         }
         private static void VisializzaLezionePerCodiceCorso()
         {
-            throw new NotImplementedException();
+            Console.WriteLine("Inserisci il codice del corso:");
+            string corsoCode = Console.ReadLine();
+
+            var lezioni = bl.GetLezioniByCodiceCorso(corsoCode);
+            if (lezioni == null)
+            {
+                Console.WriteLine("Codice corso errato.");
+            }
+            else if (lezioni.Count == 0)
+            {
+                Console.WriteLine("Lista vuota.");
+            }
+            else
+            {
+                foreach (var item in lezioni)
+                {
+                    Console.WriteLine(item);
+                }
+            }
         }
         private static void EliminaLezione()
         {
-            throw new NotImplementedException();
+            //Interazione con utente            
+            Console.WriteLine("Elenco completo delle lezioni disponibili:");
+
+            VisualizzaElencoLezioni();
+
+            Console.WriteLine("Quale lezione vuoi eliminare? Inserisci l'id");
+            int idLezioneDaEliminare = int.Parse(Console.ReadLine());
+
+            string esito = bl.EliminaLezione(idLezioneDaEliminare);
+            Console.WriteLine(esito);
         }
         private static void ModificaLezione()
         {
-            throw new NotImplementedException();
+            //Supponiamo che si può modificare solo l'aula della lezione (per semplicità)
+            VisualizzaElencoLezioni();
+
+            Console.WriteLine("Per quale lezione vuoi modificare l'aula? Inserisci l'id della lezione");
+            int idLezioneDaModificare = int.Parse(Console.ReadLine());
+
+            Console.WriteLine("Inserisci la nuova Aula:");
+            string nuovaAula = Console.ReadLine();
+
+            string esito = bl.ModificaLezione(idLezioneDaModificare, nuovaAula);
+            Console.WriteLine(esito);
+        }
+        private static void VisualizzaElencoLezioni()
+        {
+            var lezioni = bl.GetAllLezioni();
+            if (lezioni.Count == 0)
+            {
+                Console.WriteLine("Nessuna Lezione presente");
+            }
+            else
+            {
+                foreach (var item in lezioni)
+                {
+                    Console.WriteLine(item);
+                }
+            }
         }
         private static void InserisciNuovaLezione()
         {
-            Console.WriteLine("Inserisci Data e l'ora della Lezione (formato: gg-mm-aaaa):");
-            DateTime dataOra = DateTime.Parse(Console.ReadLine());
+            //chiedo le info che mi servono per creare la lezione 
+            Console.WriteLine("Inserisci i dati della lezione:");
 
-            Console.WriteLine("Inserisci la Durata della Lezione");
-            int durata = int.Parse(Console.ReadLine());
+            Console.Write("Data e ora di inizio (formato gg-mm-aaaa hh:mm): ");
+            DateTime dataOraInizio = DateTime.Parse(Console.ReadLine()); //Aggiungere Eventuali controlli (es. do-while..)
 
-            Console.WriteLine("Inserisci l'aula dove si svolgerà la lezione");
+            Console.Write("\nDurata (in gg): ");
+            int durataGG = int.Parse(Console.ReadLine());//Aggiungere eventuali controlli
+
+            Console.Write("\nAula: ");
             string aula = Console.ReadLine();
+
+            Console.Write("\nCodice Corso a cui si vuole Associare: ");
+
+            VisualizzaCorsi();
+
+            string codiceCorso = Console.ReadLine();
+            Console.WriteLine("Elenco docenti disponibili:");
 
             VisualizzaDocenti();
 
-            Console.WriteLine("inserisci l'ID del docente che vuoi assegnare:");
-            int docente = int.Parse(Console.ReadLine());
+            Console.Write("\nId Docente che terrà la lezione: ");
+            int docenteId = int.Parse(Console.ReadLine());
 
+            //la creo
             Lezione nuovaLezione = new Lezione();
-            nuovaLezione.DataOraInizio = dataOra;
-            nuovaLezione.Durata = durata;
+            nuovaLezione.DataOraInizio = dataOraInizio;
+            nuovaLezione.Durata = durataGG;
             nuovaLezione.Aula = aula;
-            nuovaLezione.DocenteID = docente;
+            nuovaLezione.CorsoCodice = codiceCorso;
+            nuovaLezione.DocenteID = docenteId;
 
-            //string esito = bl.InserisciNuovLezione(nuovaLezione);
-            //Console.WriteLine(esito);
+            //la passo a business layer per i controlli
+            string esito = bl.AggiungiLezione(nuovaLezione);
+            //stampo esito
+            Console.WriteLine(esito); 
         }
         private static void VisualizzaLezioni()
         {
@@ -199,7 +286,6 @@ namespace Week7Master
             }
         }
         #endregion
-
 
         #region Docenti
         private static void EliminaDocente()

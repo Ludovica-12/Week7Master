@@ -82,7 +82,7 @@ namespace Week7Master.MVC.Helper
                 Cognome = studenteViewModel.Cognome,
                 Email = studenteViewModel.Email,
                 DataNascita = studenteViewModel.DataNascita,
-                TitoloStudio = studenteViewModel.TitoloStudio
+                TitoloStudio = studenteViewModel.TitoloStudio,
             };
         }
         #endregion

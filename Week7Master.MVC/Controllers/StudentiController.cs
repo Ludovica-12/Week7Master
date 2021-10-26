@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Week7Master.Core.BusinessLayer;
 using Week7Master.MVC.Helper;
+using Week7Master.MVC.Models;
 
 namespace Week7Master.MVC.Controllers
 {
@@ -21,7 +22,7 @@ namespace Week7Master.MVC.Controllers
         {
             var studenti = BL.GetAllStudenti();
 
-            List<StudentiController> studentiViewModel = new List<StudentiController>();
+            List<StudenteViewModel> studentiViewModel = new List<StudenteViewModel>();
 
             foreach (var item in studenti)
             {
@@ -37,6 +38,66 @@ namespace Week7Master.MVC.Controllers
 
             var studenteViewModel = studente.ToStudenteViewModel();
 
+            return View(studenteViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(StudenteViewModel studenteViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var studente = studenteViewModel.ToStudente();
+                BL.InserisciNuovoStudente(studente);
+                return RedirectToAction(nameof(Index))
+;
+            }
+            return View(studenteViewModel);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var studente = BL.GetAllStudenti().FirstOrDefault(s => s.ID == id);
+            var studenteViewModel = studente.ToStudenteViewModel();
+            return View(studenteViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(StudenteViewModel studenteViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var studente = studenteViewModel.ToStudente();
+                BL.ModificaStudente(studente.ID, studente.Email);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(studenteViewModel);
+
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            var studente = BL.GetAllStudenti().FirstOrDefault(s => s.ID == id);
+            var studenteViewModel = studente.ToStudenteViewModel();
+            return View(studenteViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult Delete(StudenteViewModel studenteViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var studente = studenteViewModel.ToStudente();
+                BL.EliminaStudente(studente.ID);
+                return RedirectToAction(nameof(Index));
+            }
             return View(studenteViewModel);
         }
     }

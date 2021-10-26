@@ -3,6 +3,8 @@
 
 <h1>Ecco la Lista dei Docenti</h1>
 
+<a class="btn btn-primary" asp-controller="Docente" asp-action="Create" type="button">Inserisci nuovo Docente</a>
+
 <table class="table table-hover table-bordered table table-striped">
     <thead>
         <tr>
@@ -18,6 +20,8 @@
                 <td>@item.Nome</td>
                 <td>@item.Cognome</td>
                 <th>
+                    <a asp-controller="Docente" asp-action="Edit" asp-route-id="@item.ID" class="btn btn-primary">Modifica Docente</a>
+                    <a asp-controller="Docente" asp-action="Delete" asp-route-id="@item.ID" class="btn btn-danger">Elimina Docente</a>
                     <a asp-controller="Docente" asp-action="Details" asp-route-id="@item.ID" class="btn btn-primary">Visualizza Dettagli</a>
                 </th>
             </tr>

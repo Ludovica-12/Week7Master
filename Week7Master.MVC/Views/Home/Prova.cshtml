@@ -10,3 +10,21 @@
 @{ var myQuote = @"Il mio libro preferito è: ""ASP.NET Core"""; }
 
 <p>@myQuote</p>
+
+@{
+    ViewBag.AltraVariabile = "Ciao questa stringa è contenuta in AltraVAriabile";
+}
+
+
+<h3>Dati della mia ViewBag</h3>
+<p> @ViewBag.Messaggio</p>
+<p> @ViewBag.Valore</p>
+<p> @ViewBag.AltraVariabile</p>
+
+<h3>Dati della mia ViewData</h3>
+<p> @ViewData["MessaggioVD"]</p>
+<p> @ViewData["ValoreVD"]</p>
+
+
+<partial name="_PezzoSempreUguale" />
+@*<partial name="_PezzoSempreUguale" model="Model"/>*@
